@@ -1,3 +1,5 @@
 # Mini_6DOF_Arm
 
-![Alt text](ArmPictures/IMG_20190906_234253.jpg?raw=true "Title")
+More details coming...
+
+![Alt text](MCAD/ArmPictures/withHand.png?raw=true "Title")
