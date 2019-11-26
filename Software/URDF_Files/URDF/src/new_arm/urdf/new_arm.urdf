@@ -3,22 +3,22 @@
      Commit Version: 1.5.1-0-g916b5db  Build Version: 1.5.7152.31018
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 <robot
-  name="Lamp_urdf">
+  name="new_arm">
   <link
     name="base_link">
     <inertial>
       <origin
-        xyz="0.010367 -4.8905E-08 -0.050776"
+        xyz="0.0103670441692716 -4.89047614708055E-08 -0.0507763781520769"
         rpy="0 0 0" />
       <mass
-        value="0.7864" />
+        value="0.78639641308392" />
       <inertia
-        ixx="0.00089549"
-        ixy="-1.7657E-09"
-        ixz="6.0141E-05"
-        iyy="0.0015207"
-        iyz="6.3216E-10"
-        izz="0.0017142" />
+        ixx="0.000895494113504485"
+        ixy="-1.7656978596969E-09"
+        ixz="6.0141491552568E-05"
+        iyy="0.00152065890412314"
+        iyz="6.32161180918768E-10"
+        izz="0.00171422853342945" />
     </inertial>
     <visual>
       <origin
@@ -26,12 +26,12 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Lamp_urdf/meshes/base_link.STL" />
+          filename="package://new_arm/meshes/base_link.STL" />
       </geometry>
       <material
         name="">
         <color
-          rgba="0.7451 0.7451 0.7451 1" />
+          rgba="0.745098039215686 0.745098039215686 0.745098039215686 1" />
       </material>
     </visual>
     <collision>
@@ -40,25 +40,25 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Lamp_urdf/meshes/base_link.STL" />
+          filename="package://new_arm/meshes/base_link.STL" />
       </geometry>
     </collision>
   </link>
   <link
-    name="Link1">
+    name="link_1">
     <inertial>
       <origin
-        xyz="0.02112 -1.1699E-08 0.02921"
+        xyz="0.0211197744268822 -1.16994804486573E-08 0.0292101272338449"
         rpy="0 0 0" />
       <mass
-        value="0.12176" />
+        value="0.121759656689666" />
       <inertia
-        ixx="7.3849E-05"
-        ixy="-1.5322E-11"
-        ixz="-3.0283E-05"
-        iyy="9.5654E-05"
-        iyz="-2.3554E-11"
-        izz="5.1643E-05" />
+        ixx="7.38485956533475E-05"
+        ixy="-1.53219791509635E-11"
+        ixz="-3.02831795140831E-05"
+        iyy="9.56535793858089E-05"
+        iyz="-2.3553581794951E-11"
+        izz="5.1643210241122E-05" />
     </inertial>
     <visual>
       <origin
@@ -66,12 +66,12 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Lamp_urdf/meshes/Link1.STL" />
+          filename="package://new_arm/meshes/link_1.STL" />
       </geometry>
       <material
         name="">
         <color
-          rgba="0.7451 0.7451 0.7451 1" />
+          rgba="0.745098039215686 0.745098039215686 0.745098039215686 1" />
       </material>
     </visual>
     <collision>
@@ -80,12 +80,12 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Lamp_urdf/meshes/Link1.STL" />
+          filename="package://new_arm/meshes/link_1.STL" />
       </geometry>
     </collision>
   </link>
   <joint
-    name="Joint1"
+    name="joint_1"
     type="revolute">
     <origin
       xyz="0 0 0"
@@ -93,29 +93,29 @@
     <parent
       link="base_link" />
     <child
-      link="Link1" />
+      link="link_1" />
     <axis
       xyz="0 0 -1" />
     <limit
-      lower="0"
-      upper="6.28"
+      lower="-3.14"
+      upper="3.14"
       effort="0"
       velocity="0" />
   </joint>
   <link
-    name="Link2">
+    name="link_2">
     <inertial>
       <origin
-        xyz="-0.000541025630608628 5.56776925486373E-05 0.0415387428466069"
+        xyz="-0.000541025630608628 5.56776925486378E-05 0.0415387428466069"
         rpy="0 0 0" />
       <mass
         value="0.164059961594958" />
       <inertia
         ixx="0.00021226381686105"
-        ixy="-4.93600634781841E-09"
+        ixy="-4.93600634781873E-09"
         ixz="-1.38904365806391E-06"
-        iyy="0.000173693575795521"
-        iyz="3.79435727355562E-07"
+        iyy="0.00017369357579552"
+        iyz="3.79435727355565E-07"
         izz="7.7824356818603E-05" />
     </inertial>
     <visual>
@@ -124,7 +124,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Lamp_urdf/meshes/Link2.STL" />
+          filename="package://new_arm/meshes/link_2.STL" />
       </geometry>
       <material
         name="">
@@ -138,42 +138,42 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Lamp_urdf/meshes/Link2.STL" />
+          filename="package://new_arm/meshes/link_2.STL" />
       </geometry>
     </collision>
   </link>
   <joint
-    name="Joint2"
+    name="joint_2"
     type="revolute">
     <origin
       xyz="0.037707 0 0.057666"
       rpy="0 0 0" />
     <parent
-      link="Link1" />
+      link="link_1" />
     <child
-      link="Link2" />
+      link="link_2" />
     <axis
-      xyz="0 0 0" />
+      xyz="0 1 0" />
     <limit
-      lower="0"
-      upper="6.28"
+      lower="-3.14"
+      upper="3.14"
       effort="0"
       velocity="0" />
   </joint>
   <link
-    name="Link3">
+    name="link_3">
     <inertial>
       <origin
-        xyz="0.00292187305386705 -6.8536328340241E-05 0.0331811677846475"
+        xyz="0.00292187305386705 -6.85363283402404E-05 0.0331811677846475"
         rpy="0 0 0" />
       <mass
         value="0.133281294923395" />
       <inertia
         ixx="0.000103614550294055"
-        ixy="-2.66954052688116E-08"
+        ixy="-2.66954052688121E-08"
         ixz="-3.10738396849019E-06"
         iyy="8.3610745728922E-05"
-        iyz="-3.03094614458103E-07"
+        iyz="-3.03094614458102E-07"
         izz="6.37142105116064E-05" />
     </inertial>
     <visual>
@@ -182,7 +182,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Lamp_urdf/meshes/Link3.STL" />
+          filename="package://new_arm/meshes/link_3.STL" />
       </geometry>
       <material
         name="">
@@ -196,42 +196,42 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Lamp_urdf/meshes/Link3.STL" />
+          filename="package://new_arm/meshes/link_3.STL" />
       </geometry>
     </collision>
   </link>
   <joint
-    name="Joint3"
+    name="joint_3"
     type="revolute">
     <origin
       xyz="0 -5E-05 0.087"
       rpy="0 0 0" />
     <parent
-      link="Link2" />
+      link="link_2" />
     <child
-      link="Link3" />
+      link="link_3" />
     <axis
-      xyz="0 -1 0" />
+      xyz="0 1 0" />
     <limit
-      lower="0"
-      upper="6.28"
+      lower="-3.14"
+      upper="3.14"
       effort="0"
       velocity="0" />
   </joint>
   <link
-    name="Link4">
+    name="link_4">
     <inertial>
       <origin
-        xyz="-6.93889390390723E-18 1.60732612929006E-13 0.0230502436889772"
+        xyz="6.93889390390723E-18 -1.6073686164627E-13 0.0230502436889772"
         rpy="0 0 0" />
       <mass
-        value="0.06164460659671" />
+        value="0.0616446065967099" />
       <inertia
         ixx="2.35629768781271E-05"
-        ixy="2.06327010680214E-10"
-        ixz="4.87855871313329E-22"
+        ixy="2.06327010683005E-10"
+        ixz="-5.89431985267144E-22"
         iyy="2.16264848632999E-05"
-        iyz="-2.66653556612943E-16"
+        iyz="2.66653773448299E-16"
         izz="1.4527300665041E-05" />
     </inertial>
     <visual>
@@ -240,7 +240,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Lamp_urdf/meshes/Link4.STL" />
+          filename="package://new_arm/meshes/link_4.STL" />
       </geometry>
       <material
         name="">
@@ -254,39 +254,39 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Lamp_urdf/meshes/Link4.STL" />
+          filename="package://new_arm/meshes/link_4.STL" />
       </geometry>
     </collision>
   </link>
   <joint
-    name="Joint4"
+    name="joint_4"
     type="revolute">
     <origin
       xyz="0 0 0.0712"
-      rpy="0 0 -3.1416" />
+      rpy="0 0 0" />
     <parent
-      link="Link3" />
+      link="link_3" />
     <child
-      link="Link4" />
+      link="link_4" />
     <axis
       xyz="0 0 1" />
     <limit
-      lower="0"
-      upper="6.28"
+      lower="-3.14"
+      upper="3.14"
       effort="0"
       velocity="0" />
   </joint>
   <link
-    name="Link5">
+    name="link_5">
     <inertial>
       <origin
-        xyz="-0.00540369889878293 0.000111388474332554 0.0298563406822311"
+        xyz="-0.00540369889878292 0.000111388474332554 0.0298563406822311"
         rpy="0 0 0" />
       <mass
         value="0.082003985184141" />
       <inertia
         ixx="4.25538356064228E-05"
-        ixy="-4.93618679407729E-08"
+        ixy="-4.93618679407707E-08"
         ixz="3.44134827995119E-06"
         iyy="3.79923819156701E-05"
         iyz="2.72721651106619E-07"
@@ -298,7 +298,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Lamp_urdf/meshes/Link5.STL" />
+          filename="package://new_arm/meshes/link_5.STL" />
       </geometry>
       <material
         name="">
@@ -312,42 +312,42 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Lamp_urdf/meshes/Link5.STL" />
+          filename="package://new_arm/meshes/link_5.STL" />
       </geometry>
     </collision>
   </link>
   <joint
-    name="Joint5"
+    name="joint_5"
     type="revolute">
     <origin
       xyz="0 0 0.0415"
-      rpy="0 0 3.1416" />
+      rpy="0 0 0" />
     <parent
-      link="Link4" />
+      link="link_4" />
     <child
-      link="Link5" />
+      link="link_5" />
     <axis
       xyz="0 1 0" />
     <limit
-      lower="0"
-      upper="6.28"
+      lower="-3.14"
+      upper="3.14"
       effort="0"
       velocity="0" />
   </joint>
   <link
-    name="EE">
+    name="EE_link">
     <inertial>
       <origin
-        xyz="0.042146146986961 -4.95936236896049E-09 0.0778740689030945"
+        xyz="0.042146146986961 -4.95936236902825E-09 0.0778740689030945"
         rpy="0 0 0" />
       <mass
         value="1.07322722870269" />
       <inertia
         ixx="0.00185339937127512"
-        ixy="-5.12364747030879E-09"
+        ixy="-5.12364747031248E-09"
         ixz="-5.92986358897838E-05"
         iyy="0.00219441701048786"
-        iyz="-3.14292637714159E-10"
+        iyz="-3.14292637718647E-10"
         izz="0.00211751149042562" />
     </inertial>
     <visual>
@@ -356,7 +356,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Lamp_urdf/meshes/EE.STL" />
+          filename="package://new_arm/meshes/EE_link.STL" />
       </geometry>
       <material
         name="">
@@ -370,25 +370,25 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Lamp_urdf/meshes/EE.STL" />
+          filename="package://new_arm/meshes/EE_link.STL" />
       </geometry>
     </collision>
   </link>
   <joint
-    name="Joint6"
+    name="joint_6"
     type="revolute">
     <origin
       xyz="0 0 0.05975"
       rpy="0 0 0" />
     <parent
-      link="Link5" />
+      link="link_5" />
     <child
-      link="EE" />
+      link="EE_link" />
     <axis
       xyz="0 0 1" />
     <limit
-      lower="0"
-      upper="6.28"
+      lower="-3.14"
+      upper="3.14"
       effort="0"
       velocity="0" />
   </joint>

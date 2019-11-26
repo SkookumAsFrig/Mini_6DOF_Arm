@@ -6,7 +6,7 @@
     default="False" />
   <param
     name="robot_description"
-    textfile="$(find Lamp_urdf)/urdf/Lamp_urdf.urdf" />
+    textfile="$(find new_arm)/urdf/new_arm.urdf" />
   <param
     name="use_gui"
     value="$(arg gui)" />
@@ -22,5 +22,5 @@
     name="rviz"
     pkg="rviz"
     type="rviz"
-    args="-d $(find Lamp_urdf)/urdf.rviz" />
+    args="-d $(find new_arm)/urdf.rviz" />
 </launch>
