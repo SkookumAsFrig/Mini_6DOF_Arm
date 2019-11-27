@@ -1,0 +1,2 @@
+correct_arm_ikfast_plugin
+-DCATKIN_DEVEL_PREFIX=/home/skookum/Mini_6DOF_Arm/Software/URDF_Files/IKFast_Plugin/devel -DCMAKE_INSTALL_PREFIX=/home/skookum/Mini_6DOF_Arm/Software/URDF_Files/IKFast_Plugin/install -G Unix Makefiles

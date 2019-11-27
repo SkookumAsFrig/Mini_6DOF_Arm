@@ -131,6 +131,8 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/skookum/Mini_6DOF_Arm/Software/URDF_Files/URDF/build/gtest/cmake_install.cmake")
+  include("/home/skookum/Mini_6DOF_Arm/Software/URDF_Files/URDF/build/correct_arm_moveit_config/cmake_install.cmake")
+  include("/home/skookum/Mini_6DOF_Arm/Software/URDF_Files/URDF/build/correct_arm/cmake_install.cmake")
 
 endif()
 

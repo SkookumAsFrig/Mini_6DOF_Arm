@@ -1,0 +1,8 @@
+prefix=/home/skookum/Mini_6DOF_Arm/Software/URDF_Files/IKFast_Plugin/devel
+
+Name: correct_arm_ikfast_plugin
+Description: Description of correct_arm_ikfast_plugin
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/skookum/Mini_6DOF_Arm/Software/URDF_Files/IKFast_Plugin/devel/lib 
+Requires: 

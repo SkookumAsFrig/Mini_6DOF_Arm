@@ -1,0 +1,8 @@
+prefix=/home/skookum/Mini_6DOF_Arm/Software/URDF_Files/URDF/devel
+
+Name: correct_arm_moveit_config
+Description: Description of correct_arm_moveit_config
+Version: 0.3.0
+Cflags: 
+Libs: -L/home/skookum/Mini_6DOF_Arm/Software/URDF_Files/URDF/devel/lib 
+Requires: 

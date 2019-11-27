@@ -1,0 +1,6 @@
+<robot file="correct_arm.rounded.dae">
+	<Manipulator name="correct_arm">
+		<base>base_link</base>
+		<effector>EE_link</effector>
+	</Manipulator>
+</robot>

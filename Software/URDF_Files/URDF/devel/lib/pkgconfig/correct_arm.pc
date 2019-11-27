@@ -1,0 +1,8 @@
+prefix=/home/skookum/Mini_6DOF_Arm/Software/URDF_Files/URDF/devel
+
+Name: correct_arm
+Description: Description of correct_arm
+Version: 1.0.0
+Cflags: 
+Libs: -L/home/skookum/Mini_6DOF_Arm/Software/URDF_Files/URDF/devel/lib 
+Requires: 

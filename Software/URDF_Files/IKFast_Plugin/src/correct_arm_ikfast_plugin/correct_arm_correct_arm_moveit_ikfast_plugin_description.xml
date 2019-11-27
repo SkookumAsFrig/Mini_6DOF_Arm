@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<library path="lib/libcorrect_arm_correct_arm_moveit_ikfast_plugin">
+  <class base_class_type="kinematics::KinematicsBase" name="correct_arm_correct_arm/IKFastKinematicsPlugin" type="correct_arm_correct_arm::IKFastKinematicsPlugin">
+    <description>IKFast61 plugin for closed-form kinematics of correct_arm correct_arm</description>
+  </class>
+</library>

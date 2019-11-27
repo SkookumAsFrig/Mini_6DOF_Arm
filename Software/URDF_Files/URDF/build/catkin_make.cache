@@ -1,2 +1,2 @@
-
+correct_arm:correct_arm_moveit_config
 -DCATKIN_DEVEL_PREFIX=/home/skookum/Mini_6DOF_Arm/Software/URDF_Files/URDF/devel -DCMAKE_INSTALL_PREFIX=/home/skookum/Mini_6DOF_Arm/Software/URDF_Files/URDF/install -G Unix Makefiles
