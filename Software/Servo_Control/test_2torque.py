@@ -43,7 +43,7 @@ def readPosition(id):
     serialHandle.flushInput()
     servoWriteCmd(id, command["POS_READ"]) #send read command
  
-    time.sleep(0.006)  #delay
+    time.sleep(0.005)  #delay
 
     count = serialHandle.inWaiting() #get number of bytes in serial buffer
     pos = None

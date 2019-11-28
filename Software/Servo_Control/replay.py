@@ -4,7 +4,6 @@ import serial
 import datetime
 import time
 import csv
-import os
 
 
 serialHandle = serial.Serial("/dev/ttyUSB0", 115200)  #115200 baud rate
@@ -86,12 +85,10 @@ joint_id = { #[real servo id, home position]
 }
 
 
-for key in joint_id.keys():
-    servoWriteCmd(joint_id[key][0], command["LOAD_UNLOAD_WRITE"],0)  #turn motor off, make servo turnable by hand
+# for key in joint_id.keys():
+#     servoWriteCmd(joint_id[key][0], command["LOAD_UNLOAD_WRITE"],0)  #turn motor off, make servo turnable by hand
 
-print("wait 5 seconds...")
-time.sleep(5)
-print("Begin Recording Joint Angles in 5 Seconds")
+print("Begin Playing Joint Angles in 5 Seconds")
 for ind in range(5,0,-1):
     print(ind)
     time.sleep(1)
@@ -100,18 +97,21 @@ print("Begin Now!")
 init_time = time.time()
 duration = 0
 
-if os.path.isfile('recording3.csv'):
-    os.unlink('recording3.csv')
+with open('recording3.csv') as csvfile:
+    pamreader = csv.reader(csvfile,delimiter=',')
+    for row in pamreader:
+        duration = time.time() - init_time
+        try:
+            newrow = list(map(float,row))
+        except Exception as e:
+            print(row)
+        rec_time = newrow[-1]
+        while(duration<rec_time):
+            duration = time.time() - init_time
+            time.sleep(0.0000001)
+        
+        ind = 0
+        for key in joint_id.keys():
+            servoWriteCmd(joint_id[key][0],command["MOVE_WRITE"],int(newrow[ind]),0)
+            ind += 1
 
-while duration < 15:
-    duration = time.time() - init_time
-
-    joint_states = []
-    for key in joint_id.keys():
-        joint_states.append(readPosition(joint_id[key][0]))
-
-    joint_states.append(duration)
-
-    with open('recording3.csv','a') as csvfile:
-        pamwriter = csv.writer(csvfile,delimiter=',')
-        pamwriter.writerow(joint_states)
