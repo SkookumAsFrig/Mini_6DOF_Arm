@@ -7,7 +7,8 @@ import time
 
 serialHandle = serial.Serial("/dev/ttyUSB0", 115200)  #115200 baud rate
 
-command = {"MOVE_WRITE":1, "POS_READ":28, "SERVO_MODE_WRITE":29,"LOAD_UNLOAD_WRITE": 31,"SERVO_MOVE_STOP":12}
+command = {"MOVE_WRITE":1, "POS_READ":28, "SERVO_MODE_WRITE":29,
+"LOAD_UNLOAD_WRITE": 31,"SERVO_MOVE_STOP":12, "TEMP_READ": 26}
 
 #No need to split into higher and lower bytes, this function does it already. Parameter # is # of different params.
 def servoWriteCmd(id, cmd, par1 = None, par2 = None):
@@ -55,6 +56,24 @@ def readPosition(id):
                  
     return pos
 
+def readTemperature(id):
+ 
+    serialHandle.flushInput()
+    servoWriteCmd(id, command["TEMP_READ"]) #send read command
+ 
+    time.sleep(0.01)  #delay
+
+    count = serialHandle.inWaiting() #get number of bytes in serial buffer
+    tem = None
+    if count != 0: #if not empty
+        recv_data = serialHandle.read(count) #read data
+        if count == 7: #if it matches expected data length
+            if recv_data[0] == 0x55 and recv_data[1] == 0x55 and recv_data[4] == 0x1A :
+                #first and second bytes are 0x55, fifth byte is 0x1A (26), which is read temperature command
+                 tem = recv_data[5]
+                 
+    return tem
+
 # def get_high_low_bytes(input_number):
 
 #     high_byte = input_number>>8
@@ -84,9 +103,11 @@ for ind in range(1,7):
 
 while True:
     angle_out = []
+    tem_out = []
     for key in joint_id.keys():
         angle_out.append(readPosition(joint_id[key]))
+        tem_out.append(readTemperature(joint_id[key]))
     
     print(angle_out)
-
+    print(tem_out)
 

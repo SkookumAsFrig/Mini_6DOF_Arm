@@ -7,7 +7,8 @@ import time
 
 serialHandle = serial.Serial("/dev/ttyUSB0", 115200)  #115200 baud rate
 
-command = {"MOVE_WRITE":1, "POS_READ":28, "SERVO_MODE_WRITE":29,"LOAD_UNLOAD_WRITE": 31,"SERVO_MOVE_STOP":12}
+command = {"MOVE_WRITE":1, "POS_READ":28, "SERVO_MODE_WRITE":29,
+"LOAD_UNLOAD_WRITE": 31,"SERVO_MOVE_STOP":12, "TEMP_READ": 26}
 
 #No need to split into higher and lower bytes, this function does it already. Parameter # is # of different params.
 def servoWriteCmd(id, cmd, par1 = None, par2 = None):
@@ -42,7 +43,7 @@ def readPosition(id):
     serialHandle.flushInput()
     servoWriteCmd(id, command["POS_READ"]) #send read command
  
-    time.sleep(0.01)  #delay
+    time.sleep(0.006)  #delay
 
     count = serialHandle.inWaiting() #get number of bytes in serial buffer
     pos = None
@@ -55,19 +56,23 @@ def readPosition(id):
                  
     return pos
 
-# def get_high_low_bytes(input_number):
+def readTemperature(id):
+ 
+    serialHandle.flushInput()
+    servoWriteCmd(id, command["TEMP_READ"]) #send read command
+ 
+    time.sleep(0.01)  #delay
 
-#     high_byte = input_number>>8
-#     low_byte = input_number & 0xFF
-
-#     return high_byte, low_byte
-
-# servoWriteCmd(1, command["LOAD_UNLOAD_WRITE"],0)  #turn motor off, make servo turnable by hand
-
-# for ind in range(0,1000,100):
-#     time.sleep(5)
-#     servoWriteCmd(1,command["MOVE_WRITE"],ind,2000)                                                                                                                                                                                                               
-#     print((ind,readPosition(1)))
+    count = serialHandle.inWaiting() #get number of bytes in serial buffer
+    tem = None
+    if count != 0: #if not empty
+        recv_data = serialHandle.read(count) #read data
+        if count == 7: #if it matches expected data length
+            if recv_data[0] == 0x55 and recv_data[1] == 0x55 and recv_data[4] == 0x1A :
+                #first and second bytes are 0x55, fifth byte is 0x1A (26), which is read temperature command
+                 tem = recv_data[5]
+                 
+    return tem
 
 joint_id = { #[real servo id, home position]
 "joint_1" : [5, 852],
@@ -86,7 +91,7 @@ for key in joint_id.keys():
         servoWriteCmd(joint_id[key][0], command["LOAD_UNLOAD_WRITE"],0)  #turn motor off, make servo turnable by hand
 
 togg = True
-tog_speed = 1000
+tog_speed = 700
 times = 0
 
 while True:
@@ -104,10 +109,13 @@ while True:
     else:
         servoWriteCmd(joint_id["joint_6"][0],command["SERVO_MODE_WRITE"],1,0)
 
-    time.sleep(0.05)
+    time.sleep(0.03)
 
     angle_out = []
+    tem_out = []
     for key in joint_id.keys():
         angle_out.append(readPosition(joint_id[key][0]))
+        tem_out.append(readTemperature(joint_id[key][0]))
     
     print(angle_out)
+    print(tem_out)
