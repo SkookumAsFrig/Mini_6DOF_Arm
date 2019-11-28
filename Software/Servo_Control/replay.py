@@ -97,7 +97,7 @@ print("Begin Now!")
 init_time = time.time()
 duration = 0
 
-with open('recording3.csv') as csvfile:
+with open('light_off2.csv') as csvfile:
     pamreader = csv.reader(csvfile,delimiter=',')
     for row in pamreader:
         duration = time.time() - init_time

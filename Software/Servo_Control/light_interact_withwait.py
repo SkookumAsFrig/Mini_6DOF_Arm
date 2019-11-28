@@ -4,8 +4,52 @@ import serial
 import datetime
 import time
 import csv
-import os
+import RPi.GPIO as GPIO
 
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(5,GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+
+global joint_id
+global recent_off, recent_last
+recent_off = False
+recent_last = recent_off
+
+def GPIO5cb(channel):
+    global joint_id
+    global recent_off, recent_last
+    recent_off = True
+
+    if recent_last != recent_last:
+        for key in joint_id.keys():
+            servoWriteCmd(joint_id[key][0],command["MOVE_WRITE"],joint_id[key][1],0)
+
+        time.sleep(1.5)
+
+        init_time = time.time()
+        duration = 0
+
+        with open('light_off.csv') as csvfile:
+            pamreader = csv.reader(csvfile,delimiter=',')
+            for row in pamreader:
+                duration = time.time() - init_time
+                try:
+                    newrow = list(map(float,row))
+                except Exception as e:
+                    print(row)
+                rec_time = newrow[-1]
+                while(duration<rec_time):
+                    duration = time.time() - init_time
+                    time.sleep(0.0000001)
+                
+                ind = 0
+                for key in joint_id.keys():
+                    servoWriteCmd(joint_id[key][0],command["MOVE_WRITE"],int(newrow[ind]),0)
+                    ind += 1
+    
+    else:
+        print("wait a while, I am tired!")
+
+GPIO.add_event_detect(5, GPIO.FALLING, callback=GPIO5cb, bouncetime=1000)
 
 serialHandle = serial.Serial("/dev/ttyUSB0", 115200)  #115200 baud rate
 
@@ -85,33 +129,15 @@ joint_id = { #[real servo id, home position]
 "joint_6" : [3, 474]
 }
 
-
-for key in joint_id.keys():
-    servoWriteCmd(joint_id[key][0], command["LOAD_UNLOAD_WRITE"],0)  #turn motor off, make servo turnable by hand
-
-print("wait 5 seconds...")
-time.sleep(5)
-print("Begin Recording Joint Angles in 5 Seconds")
-for ind in range(5,0,-1):
-    print(ind)
-    time.sleep(1)
-print("Begin Now!")
-
-init_time = time.time()
-duration = 0
-
-if os.path.isfile('light_off2.csv'):
-    os.unlink('light_off2.csv')
-
-while duration < 15:
-    duration = time.time() - init_time
-
-    joint_states = []
-    for key in joint_id.keys():
-        joint_states.append(readPosition(joint_id[key][0]))
-
-    joint_states.append(duration)
-
-    with open('light_off2.csv','a') as csvfile:
-        pamwriter = csv.writer(csvfile,delimiter=',')
-        pamwriter.writerow(joint_states)
+init_time_off = 0
+off_duration = 0
+while True:
+    time.sleep(0.01)
+    if recent_off:
+        recent_last = recent_off
+        recent_off = False
+        init_time_off = time.time()
+    off_duration = time.time() - init_time_off
+    if off_duration>10:
+        recent_last = False
+        
