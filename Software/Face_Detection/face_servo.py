@@ -77,6 +77,7 @@ def GPIO5cb():
                     
                     ind = 0
                     for key in joint_id.keys():
+                        servoWriteCmd(joint_id[key][0],command["SERVO_MODE_WRITE"],0)
                         servoWriteCmd(joint_id[key][0],command["MOVE_WRITE"],int(newrow[ind]),0)
                         ind += 1
             
@@ -220,7 +221,7 @@ while True:
     rects = detector.detectMultiScale(cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY),
                                       scaleFactor=1.1,
                                       minNeighbors=5,
-                                      minSize=(30, 30))
+                                      minSize=(60, 60))
 
     camera_center_x = 200
     camera_center_y = 150
@@ -248,14 +249,19 @@ while True:
                 (bbx_center_x, bbx_center_y), (dist_center_x, dist_center_y)))
 
         # pdb.set_trace()
-
+        servoWriteCmd(joint_id['joint_1'][0],command["SERVO_MODE_WRITE"],0)
         pos = readPosition(joint_id['joint_6'][0])
         
         if pos :
-            print(((pos<100) and (dist_center_x<0)))
-            print(((pos>900) and (dist_center_x>0)))
-            # if not (((pos<100) and (dist_center_x<0)) or ((pos>900) and (dist_center_x>0))):
-            #     servoWriteCmd(joint_id['joint_6'][0],command["SERVO_MODE_WRITE"],1,10*dist_center_x)
+            print(pos)
+            if not (((pos<300) and (dist_center_x<0)) or ((pos>700) and (dist_center_x>0))) and not light_on_sw:
+                servoWriteCmd(joint_id['joint_1'][0],command["SERVO_MODE_WRITE"],1,int(2*dist_center_x))
+            if pos<50 or pos>1000:
+                servoWriteCmd(joint_id['joint_1'][0],command["SERVO_MODE_WRITE"],1,0)
+
+        else:
+            servoWriteCmd(joint_id['joint_1'][0],command["SERVO_MODE_WRITE"],1,0)
+
         
 
     # show the output frame

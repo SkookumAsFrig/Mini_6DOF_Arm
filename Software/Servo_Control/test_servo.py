@@ -4,7 +4,6 @@ import serial
 import datetime
 import time
 
-
 serialHandle = serial.Serial("/dev/ttyUSB0", 115200)  #115200 baud rate
 
 command = {"MOVE_WRITE":1, "POS_READ":28, "SERVO_MODE_WRITE":29,
