@@ -73,16 +73,16 @@ if __name__ == '__main__':
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
     print('Running on device: {}'.format(device))
 
-    mtcnn = MTCNN(image_size=80,
+    mtcnn = MTCNN(image_size=40,
                   margin=0,
                   min_face_size=20,
                   thresholds=[0.6, 0.7, 0.7],
                   factor=0.709,
-                  prewhiten=True,
+                  prewhiten=False,
 # keep_all=True,
                   device=device)
 
-    detect(vs, mtcnn, device, show=True)
+    detect(vs, mtcnn, device, show=False)
 
     # # running with Thread
     # detect_thread = Thread(target=detect, args=(vs, mtcnn, device, False, ), daemon=True)

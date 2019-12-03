@@ -5,6 +5,7 @@ import datetime
 import time
 import csv
 import RPi.GPIO as GPIO
+from threading import Thread
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(5,GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
@@ -12,68 +13,88 @@ GPIO.setup(5,GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 global joint_id
 global command
 global off_mode
+global light_on_sw
+light_on_sw = False
 off_mode = True
 
-def GPIO5cb(channel):
+joint_id = { #[real servo id, home position]
+"joint_1" : [5, 852],
+"joint_2" : [1, 597],
+"joint_3" : [2, 135],
+"joint_4" : [4, 510],
+"joint_5" : [6, 900],
+"joint_6" : [3, 474]
+}
+
+def GPIO5cb():
+    global light_on_sw
     global joint_id
     global command
     global off_mode
+    while True:
+        time.sleep(0.1)
+        if light_on_sw:
 
-    if off_mode:
-        off_file = 'light_off.csv'
-    else:
-        off_file = 'light_off2.csv'
+            if off_mode:
+                off_file = 'light_off.csv'
+            else:
+                off_file = 'light_off2.csv'
 
-    off_mode = not off_mode
+            off_mode = not off_mode
 
-    for key in joint_id.keys():
-        servoWriteCmd(joint_id[key][0],command["SERVO_MODE_WRITE"],0)
-        servoWriteCmd(joint_id[key][0],command["MOVE_WRITE"],joint_id[key][1],0)
-
-    time.sleep(1.5)
-
-    init_time = time.time()
-    duration = 0
-
-    with open(off_file) as csvfile:
-        pamreader = csv.reader(csvfile,delimiter=',')
-        for row in pamreader:
-            duration = time.time() - init_time
-            try:
-                newrow = list(map(float,row))
-            except Exception as e:
-                print(row)
-            rec_time = newrow[-1]
-            while(duration<rec_time):
-                duration = time.time() - init_time
-                time.sleep(0.0000001)
-            
-            ind = 0
             for key in joint_id.keys():
-                servoWriteCmd(joint_id[key][0],command["MOVE_WRITE"],int(newrow[ind]),0)
-                ind += 1
-    
-    togg = True
-    tog_speed = 1000
-    times = 0
+                servoWriteCmd(joint_id[key][0],command["SERVO_MODE_WRITE"],0)
+                servoWriteCmd(joint_id[key][0],command["MOVE_WRITE"],joint_id[key][1],0)
 
-    while tog_speed>=150:
-        time.sleep(0.03)
-        if togg:
-            servoWriteCmd(joint_id["joint_6"][0],command["SERVO_MODE_WRITE"],1,tog_speed)
-        else:
-            servoWriteCmd(joint_id["joint_6"][0],command["SERVO_MODE_WRITE"],1,-tog_speed)
-        togg = not togg
-        if times<2:
-            times += 1
-        else:
-            tog_speed -= 150
+            time.sleep(1.5)
+
+            init_time = time.time()
+            duration = 0
+
+            with open(off_file) as csvfile:
+                pamreader = csv.reader(csvfile,delimiter=',')
+                for row in pamreader:
+                    duration = time.time() - init_time
+                    try:
+                        newrow = list(map(float,row))
+                    except Exception as e:
+                        continue
+                        # print(row)
+                    rec_time = newrow[-1]
+                    while(duration<rec_time):
+                        duration = time.time() - init_time
+                        time.sleep(0.0000001)
+                    
+                    ind = 0
+                    for key in joint_id.keys():
+                        servoWriteCmd(joint_id[key][0],command["MOVE_WRITE"],int(newrow[ind]),0)
+                        ind += 1
+            
+            togg = True
+            tog_speed = 1000
             times = 0
 
-    servoWriteCmd(joint_id["joint_6"][0],command["SERVO_MODE_WRITE"],1,0)
-    servoWriteCmd(joint_id["joint_6"][0],command["SERVO_MODE_WRITE"],0)
+            while tog_speed>=150:
+                time.sleep(0.03)
+                if togg:
+                    servoWriteCmd(joint_id["joint_6"][0],command["SERVO_MODE_WRITE"],1,tog_speed)
+                else:
+                    servoWriteCmd(joint_id["joint_6"][0],command["SERVO_MODE_WRITE"],1,-tog_speed)
+                togg = not togg
+                if times<2:
+                    times += 1
+                else:
+                    tog_speed -= 150
+                    times = 0
 
-GPIO.add_event_detect(5, GPIO.FALLING, callback=GPIO5cb, bouncetime=15000)
+            light_on_sw = False
+
+            servoWriteCmd(joint_id["joint_6"][0],command["SERVO_MODE_WRITE"],1,0)
+            servoWriteCmd(joint_id["joint_6"][0],command["SERVO_MODE_WRITE"],0)
+
+light_off_thread = Thread(target=GPIO5cb,daemon=True)
+light_off_thread.daemon = True
+light_off_thread.start()
 
 serialHandle = serial.Serial("/dev/ttyUSB0", 115200)  #115200 baud rate
 
@@ -144,14 +165,21 @@ def readTemperature(id):
                  
     return tem
 
-joint_id = { #[real servo id, home position]
-"joint_1" : [5, 852],
-"joint_2" : [1, 597],
-"joint_3" : [2, 135],
-"joint_4" : [4, 510],
-"joint_5" : [6, 900],
-"joint_6" : [3, 474]
-}
+cont_var = 0
+last_input = True
 
 while True:
-    time.sleep(0.01)
+    time.sleep(0.5)
+    now_input = GPIO.input(5)
+    if not now_input and not last_input:
+        cont_var += 1
+    else:
+        cont_var = 0
+
+    if cont_var>6:
+        cont_var = -10
+        light_on_sw = True
+
+    # print(cont_var)
+    
+    last_input = now_input
