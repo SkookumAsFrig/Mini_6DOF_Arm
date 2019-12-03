@@ -59,8 +59,8 @@ while True:
         cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
         bbx_center_x = (x + w) / 2
         bbx_center_y = (y + h) / 2
-        dist_center_x = abs(camera_center_x - bbx_center_x)
-        dist_center_y = abs(camera_center_y - bbx_center_y)
+        dist_center_x = camera_center_x - bbx_center_x
+        dist_center_y = camera_center_y - bbx_center_y
         print('---------------------------------------------------')
         print(
             'Index: {} Camear center: {} Face center: {} Distance: {}'.format(

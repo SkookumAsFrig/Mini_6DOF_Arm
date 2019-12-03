@@ -1,11 +1,21 @@
-#!/usr/bin/python3
+# USAGE
+# python build_face_dataset.py --cascade haarcascade_frontalface_default.xml --output dataset/adrian
+
+# import the necessary packages
+from imutils.video import VideoStream
+import argparse
+import imutils
+import time
+import cv2
+import os
+import numpy
 
 import serial
-import datetime
-import time
 import csv
 import RPi.GPIO as GPIO
 from threading import Thread
+
+import pdb
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(5,GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
@@ -32,7 +42,7 @@ def GPIO5cb():
     global command
     global off_mode
     while True:
-        time.sleep(0.1)
+        time.sleep(1)
         if light_on_sw:
 
             if off_mode:
@@ -165,11 +175,93 @@ def readTemperature(id):
                  
     return tem
 
+# construct the argument parser and parse the arguments
+ap = argparse.ArgumentParser()
+ap.add_argument("-c",
+                "--cascade",
+                required=True,
+                help="path to where the face cascade resides")
+ap.add_argument("-o",
+                "--output",
+                required=True,
+                help="path to output directory")
+args = vars(ap.parse_args())
+
+# load OpenCV's Haar cascade for face detection from disk
+detector = cv2.CascadeClassifier(args["cascade"])
+
+# initialize the video stream, allow the camera sensor to warm up,
+# and initialize the total number of example faces written to disk
+# thus far
+# the size of captured frames is set to width=320, height=240
+# frame per second is 32
+print("[INFO] starting video stream...")
+# vs = VideoStream(src=0).start()
+vs = VideoStream(usePiCamera=True, resolution=(320, 240), framerate=32).start()
+time.sleep(2.0)
+total = 0
+
+#servo control variables
 cont_var = 0
 last_input = True
+dist_center_x = 0
 
+# loop over the frames from the video stream
 while True:
-    time.sleep(0.5)
+    # grab the frame from the threaded video stream, clone it, (just
+    # in case we want to write it to disk), and then resize the frame
+    # so we can apply face detection faster
+    # resize the frame size with fixed width/height ratio => width=400, height=300
+    frame = vs.read()
+    orig = frame.copy()
+    frame = imutils.resize(frame, width=400)
+
+    # detect faces in the grayscale frame
+    rects = detector.detectMultiScale(cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY),
+                                      scaleFactor=1.1,
+                                      minNeighbors=5,
+                                      minSize=(30, 30))
+
+    camera_center_x = 200
+    camera_center_y = 150
+
+    # loop over the face detections and draw them on the frame
+    if len(rects)>0:
+        arr = numpy.zeros((len(rects),1))
+
+        for idx, (x, y, w, h) in enumerate(rects, start=1):
+            arr[idx-1] = w*h
+
+        max_ind = numpy.argmax(arr)
+
+        x, y, w, h = rects[max_ind]
+        
+        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        bbx_center_x = x + w/2
+        bbx_center_y = y + h/2
+        dist_center_x = camera_center_x - bbx_center_x
+        dist_center_y = camera_center_y - bbx_center_y
+        print('---------------------------------------------------')
+        print(
+            'Index: {} Camear center: {} Face center: {} Distance: {}'.format(
+                idx, (camera_center_x, camera_center_y),
+                (bbx_center_x, bbx_center_y), (dist_center_x, dist_center_y)))
+
+        # pdb.set_trace()
+
+        pos = readPosition(joint_id['joint_6'][0])
+        
+        if pos :
+            print(((pos<100) and (dist_center_x<0)))
+            print(((pos>900) and (dist_center_x>0)))
+            # if not (((pos<100) and (dist_center_x<0)) or ((pos>900) and (dist_center_x>0))):
+            #     servoWriteCmd(joint_id['joint_6'][0],command["SERVO_MODE_WRITE"],1,10*dist_center_x)
+        
+
+    # show the output frame
+    cv2.imshow("Frame", frame)
+    key = cv2.waitKey(1) & 0xFF
+
     now_input = GPIO.input(5)
     if not now_input and not last_input:
         cont_var += 1
@@ -181,3 +273,9 @@ while True:
         light_on_sw = True
     
     last_input = now_input
+
+# do a bit of cleanup
+print("[INFO] {} face images stored".format(total))
+print("[INFO] cleaning up...")
+cv2.destroyAllWindows()
+vs.stop()
