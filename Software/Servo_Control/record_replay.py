@@ -99,11 +99,11 @@ print("Begin Now!")
 
 init_time = time.time()
 duration = 0
-fname = 'rand_rout7'
+fname = 'rand_rout5'
 if os.path.isfile(fname+'.csv'):
     os.unlink(fname+'.csv')
 
-while duration < 20:
+while duration < 5:
     duration = time.time() - init_time
 
     joint_states = []

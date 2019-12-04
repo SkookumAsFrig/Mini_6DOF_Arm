@@ -240,7 +240,7 @@ hinc = 1
 linc = 1
 
 show_time = time.time()
-d_lim = 10
+d_lim = 30
 
 # loop over the frames from the video stream
 while True:
