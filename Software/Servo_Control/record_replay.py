@@ -99,11 +99,11 @@ print("Begin Now!")
 
 init_time = time.time()
 duration = 0
+fname = 'rand_rout7'
+if os.path.isfile(fname+'.csv'):
+    os.unlink(fname+'.csv')
 
-if os.path.isfile('light_off2.csv'):
-    os.unlink('light_off2.csv')
-
-while duration < 15:
+while duration < 20:
     duration = time.time() - init_time
 
     joint_states = []
@@ -112,6 +112,6 @@ while duration < 15:
 
     joint_states.append(duration)
 
-    with open('light_off2.csv','a') as csvfile:
+    with open(fname+'.csv','a') as csvfile:
         pamwriter = csv.writer(csvfile,delimiter=',')
         pamwriter.writerow(joint_states)

@@ -9,6 +9,7 @@ import time
 import cv2
 import os
 import numpy
+import random
 
 import serial
 import csv
@@ -35,6 +36,35 @@ joint_id = { #[real servo id, home position]
 "joint_5" : [6, 900],
 "joint_6" : [3, 474]
 }
+
+def show_routine(routine_file):
+    global joint_id
+    init_time = time.time()
+    duration = 0
+
+    with open(routine_file) as csvfile:
+        pamreader = csv.reader(csvfile,delimiter=',')
+        for row in pamreader:
+            duration = time.time() - init_time
+            try:
+                newrow = list(map(float,row))
+            except Exception as e:
+                continue
+                # print(row)
+            rec_time = newrow[-1]
+            while(duration<rec_time):
+                duration = time.time() - init_time
+                time.sleep(0.0000001)
+            
+            ind = 0
+            for key in joint_id.keys():
+                servoWriteCmd(joint_id[key][0],command["SERVO_MODE_WRITE"],0)
+                servoWriteCmd(joint_id[key][0],command["MOVE_WRITE"],int(newrow[ind]),0)
+                ind += 1
+    
+    for key in joint_id.keys():
+        servoWriteCmd(joint_id[key][0],command["SERVO_MODE_WRITE"],0)
+        servoWriteCmd(joint_id[key][0],command["MOVE_WRITE"],joint_id[key][1],0)
 
 def GPIO5cb():
     global light_on_sw
@@ -100,8 +130,8 @@ def GPIO5cb():
 
             light_on_sw = False
 
-            servoWriteCmd(joint_id["joint_6"][0],command["SERVO_MODE_WRITE"],1,0)
             servoWriteCmd(joint_id["joint_6"][0],command["SERVO_MODE_WRITE"],0)
+            servoWriteCmd(joint_id['joint_3'][0],command["MOVE_WRITE"],250,0)
 
 light_off_thread = Thread(target=GPIO5cb,daemon=True)
 light_off_thread.daemon = True
@@ -209,6 +239,9 @@ dist_center_x = 0
 hinc = 1
 linc = 1
 
+show_time = time.time()
+d_lim = 10
+
 # loop over the frames from the video stream
 while True:
     # grab the frame from the threaded video stream, clone it, (just
@@ -229,6 +262,7 @@ while True:
     camera_center_y = 150
 
     # loop over the face detections and draw them on the frame
+    
     if len(rects)>0:
         arr = numpy.zeros((len(rects),1))
 
@@ -269,19 +303,32 @@ while True:
             if pos2>150 and pos2<900:
                 if dist_center_y>0:
                     linc = 1
-                    if hinc < 100:
+                    if hinc < 500:
                         hinc += 1
                     servoWriteCmd(joint_id['joint_3'][0],command["SERVO_MODE_WRITE"],0)
                     servoWriteCmd(joint_id['joint_3'][0],command["MOVE_WRITE"],pos2+hinc,0)
+                    print(pos2+hinc)
                 else:
                     if linc < 100:
                         linc += 1
                     hinc = 1
                     servoWriteCmd(joint_id['joint_3'][0],command["SERVO_MODE_WRITE"],0)
                     servoWriteCmd(joint_id['joint_3'][0],command["MOVE_WRITE"],pos2-linc,0)
+            elif pos2<155:
+                servoWriteCmd(joint_id['joint_3'][0],command["MOVE_WRITE"],170,0)
+                print('hit low end')
             
     else:
         servoWriteCmd(joint_id['joint_1'][0],command["SERVO_MODE_WRITE"],1,0)
+    
+    duration = time.time() - show_time
+    if duration > d_lim:
+        print('show')
+        duration = 0
+        show_time = time.time()
+        d_lim = random.randint(30,60)
+        f_ind = random.randint(1,7)
+        show_routine('rand_rout'+str(f_ind)+'.csv')
 
         
 
