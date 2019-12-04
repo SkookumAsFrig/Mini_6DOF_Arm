@@ -25,6 +25,8 @@ global joint_id
 global command
 global off_mode
 global light_on_sw
+global show_now
+show_now = False
 light_on_sw = False
 off_mode = True
 
@@ -39,32 +41,38 @@ joint_id = { #[real servo id, home position]
 
 def show_routine(routine_file):
     global joint_id
-    init_time = time.time()
-    duration = 0
+    global show_now
 
-    with open(routine_file) as csvfile:
-        pamreader = csv.reader(csvfile,delimiter=',')
-        for row in pamreader:
-            duration = time.time() - init_time
-            try:
-                newrow = list(map(float,row))
-            except Exception as e:
-                continue
-                # print(row)
-            rec_time = newrow[-1]
-            while(duration<rec_time):
+    if not light_on_sw:
+        show_now = True
+        init_time = time.time()
+        duration = 0
+
+        with open(routine_file) as csvfile:
+            pamreader = csv.reader(csvfile,delimiter=',')
+            for row in pamreader:
                 duration = time.time() - init_time
-                time.sleep(0.0000001)
-            
-            ind = 0
-            for key in joint_id.keys():
-                servoWriteCmd(joint_id[key][0],command["SERVO_MODE_WRITE"],0)
-                servoWriteCmd(joint_id[key][0],command["MOVE_WRITE"],int(newrow[ind]),0)
-                ind += 1
-    
-    for key in joint_id.keys():
-        servoWriteCmd(joint_id[key][0],command["SERVO_MODE_WRITE"],0)
-        servoWriteCmd(joint_id[key][0],command["MOVE_WRITE"],joint_id[key][1],0)
+                try:
+                    newrow = list(map(float,row))
+                except Exception as e:
+                    continue
+                    # print(row)
+                rec_time = newrow[-1]
+                while(duration<rec_time):
+                    duration = time.time() - init_time
+                    time.sleep(0.0000001)
+                
+                ind = 0
+                for key in joint_id.keys():
+                    servoWriteCmd(joint_id[key][0],command["SERVO_MODE_WRITE"],0)
+                    servoWriteCmd(joint_id[key][0],command["MOVE_WRITE"],int(newrow[ind]),0)
+                    ind += 1
+        
+        for key in joint_id.keys():
+            servoWriteCmd(joint_id[key][0],command["SERVO_MODE_WRITE"],0)
+            servoWriteCmd(joint_id[key][0],command["MOVE_WRITE"],joint_id[key][1],0)
+        
+        show_now = False
 
 def GPIO5cb():
     global light_on_sw
@@ -73,7 +81,7 @@ def GPIO5cb():
     global off_mode
     while True:
         time.sleep(1)
-        if light_on_sw:
+        if light_on_sw and not show_now:
 
             if off_mode:
                 off_file = 'light_off.csv'
@@ -241,6 +249,8 @@ linc = 1
 
 show_time = time.time()
 d_lim = 30
+t_duration = 0
+t_init = time.time()
 
 # loop over the frames from the video stream
 while True:
@@ -326,7 +336,7 @@ while True:
         print('show')
         duration = 0
         show_time = time.time()
-        d_lim = random.randint(30,60)
+        d_lim = random.randint(90,180)
         f_ind = random.randint(1,7)
         show_routine('rand_rout'+str(f_ind)+'.csv')
 
@@ -335,6 +345,16 @@ while True:
     # show the output frame
     cv2.imshow("Frame", frame)
     key = cv2.waitKey(1) & 0xFF
+
+    t_duration = time.time()-t_init
+
+    if t_duration>5:
+        t_init = time.time()
+        tem_out = []
+        for key in joint_id.keys():
+            tem_out.append(readTemperature(joint_id[key][0]))
+        
+        print(tem_out)
 
     now_input = GPIO.input(5)
     if not now_input and not last_input:
