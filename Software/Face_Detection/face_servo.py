@@ -206,6 +206,8 @@ total = 0
 cont_var = 0
 last_input = True
 dist_center_x = 0
+hinc = 1
+linc = 1
 
 # loop over the frames from the video stream
 while True:
@@ -249,18 +251,37 @@ while True:
                 (bbx_center_x, bbx_center_y), (dist_center_x, dist_center_y)))
 
         # pdb.set_trace()
-        servoWriteCmd(joint_id['joint_1'][0],command["SERVO_MODE_WRITE"],0)
-        pos = readPosition(joint_id['joint_6'][0])
+        pos = readPosition(joint_id['joint_1'][0])
+        pos2 = readPosition(joint_id['joint_3'][0])
         
-        if pos :
+        if pos:
             print(pos)
-            if not (((pos<300) and (dist_center_x<0)) or ((pos>700) and (dist_center_x>0))) and not light_on_sw:
-                servoWriteCmd(joint_id['joint_1'][0],command["SERVO_MODE_WRITE"],1,int(2*dist_center_x))
-            if pos<50 or pos>1000:
-                servoWriteCmd(joint_id['joint_1'][0],command["SERVO_MODE_WRITE"],1,0)
 
-        else:
-            servoWriteCmd(joint_id['joint_1'][0],command["SERVO_MODE_WRITE"],1,0)
+            if ((pos<300) and (dist_center_x<0)):
+                servoWriteCmd(joint_id['joint_1'][0],command["SERVO_MODE_WRITE"],1,abs(int(2*dist_center_x)))
+            elif ((pos>900) and (dist_center_x>0)):
+                servoWriteCmd(joint_id['joint_1'][0],command["SERVO_MODE_WRITE"],1,-abs(int(2*dist_center_x)))
+            else:
+                servoWriteCmd(joint_id['joint_1'][0],command["SERVO_MODE_WRITE"],1,int(3*dist_center_x))
+
+        if pos2:
+            print(pos2)
+            if pos2>150 and pos2<900:
+                if dist_center_y>0:
+                    linc = 1
+                    if hinc < 100:
+                        hinc += 1
+                    servoWriteCmd(joint_id['joint_3'][0],command["SERVO_MODE_WRITE"],0)
+                    servoWriteCmd(joint_id['joint_3'][0],command["MOVE_WRITE"],pos2+hinc,0)
+                else:
+                    if linc < 100:
+                        linc += 1
+                    hinc = 1
+                    servoWriteCmd(joint_id['joint_3'][0],command["SERVO_MODE_WRITE"],0)
+                    servoWriteCmd(joint_id['joint_3'][0],command["MOVE_WRITE"],pos2-linc,0)
+            
+    else:
+        servoWriteCmd(joint_id['joint_1'][0],command["SERVO_MODE_WRITE"],1,0)
 
         
 
