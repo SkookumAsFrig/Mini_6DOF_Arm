@@ -1,0 +1,631 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+  <link rel="shortcut icon" href="img/icon2.ico" />
+  <title>Pixar Lamp</title>
+
+  <!-- Custom styles for this template -->
+  <link href="main.css" rel="stylesheet">
+</head>
+
+<body>
+  <header class="website header">
+    <!-- navigation bar -->
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <a class="navbar-brand" href="#" id="header-logo">
+        <img src="img/icon.png" class="img-fluid" width="100" alt="Pixar Lamp">
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#intro">Introduction</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#objectives">Objectives</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#design">Design</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#testing">Testing</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#results">Results</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#budget">Budget</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#references">References</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#contribution">Contribution</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#acknowledgement">Acknowledgements</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <!-- image carousel -->
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="margin: 20px 0;">
+      <ol class="carousel-indicators">
+        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+      </ol>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="img/cover.png" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+          <img src="img/pixar1.png" class="d-block w-100" alt="...">
+        </div>
+      </div>
+      <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- content sections -->
+  <div class="container">
+    <!-- Introduction -->
+    <div id="intro" class="introdcution-sec">
+      <div class="section-header">
+        <h2>Introduction</h2>
+      </div>
+      <div class="introduction-content">
+        <p>
+          In this project, we built both the hardware and software for a social robot inspired by Pixar Animation
+          Studio’s Luxo Jr.. For the base robot arm, we used the open-source mini 6-DOF manipulator platform that
+          we also developed (for our Master of Engineering project). The end-effector, which contains both the lamp
+          and a Raspberry Pi camera, was custom designed and manufactured for this project. To achieve organic behavior,
+          we implemented face-detection and tracking algorithms on the Raspberry Pi 3B+. In addition, we implemented
+          teach
+          and replay algorithms to train the robot arm for movement routines, in order to quickly and easily achieve
+          sophisticated
+          motion. Overall we were successful and created a robot that is lively and interacts with humans in its
+          surroundings,
+          powered by a resource-restricted embedded device.
+        </p>
+      </div>
+    </div>
+
+    <!-- Objectives -->
+    <div id="objectives" class="objectives-sec">
+      <div class="section-header">
+        <h2>Objectives</h2>
+      </div>
+      <div class="objectives-content">
+        <ul class="list-group">
+          <li class="list-group-item">Achieve social robot design through implementation of humanistic behaviors</li>
+          <li class="list-group-item">Design and manufacture the lamp end effector for the 6-DOF robot arm</li>
+          <li class="list-group-item">Implement a high frame rate and accurate face detection algorithms for tracking
+          </li>
+          <li class="list-group-item">Program robot to organically interact with surroundings and a physical light
+            switch</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Design -->
+    <div id="design" class="design-sec">
+      <div class="section-header">
+        <h2>Design</h2>
+      </div>
+      <div class="design-content">
+        <div class="hardware-card">
+          <div class="card-header">
+            <h3>Hardware</h2>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Mechnical</h5>
+            <div class="card-group">
+              <div class="card">
+                <img src="img/mechanical_design_1.png" class="card-img-top">
+              </div>
+              <div class="card">
+                <img src="img/mechanical_design_2.png" class="card-img-top">
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <p>
+              All of the robot hardware was custom designed. The arm, as mentioned, was already completely designed and
+              manufactured from a different project, and was almost entirely 3D printed. It uses LewanSoul LX-16A serial
+              servos, which allow for much more sophisticated controls and feedback than conventional ones. Servo
+              controls will be discussed in a later section. The arm has 6 degrees of freedom, meaning it has 6
+              independent joints, allowing the end-effector to achieve a great range of poses in 3D space. The design
+              was done entirely in Autodesk Inventor, and all CAD files are released open-source in the Github
+              repository.
+              <br>
+              The end-effector, which in this case is the lamp “head”, is newly designed and created for this project.
+              It was also done in Autodesk Inventor and was modeled from a conventional desk lamp. It comes apart in
+              three separate pieces. The largest piece is the lampshade, which also serves as the connection to the
+              robot arm. An intermediary frame mounts the HDMI camera conversion circuit board, as well as the bulb. The
+              last piece is the bulb, which has mounting and a cutout for a Raspberry Pi camera. The bulb is printed out
+              of a special light conductive filament, allowing it to scatter the light from an LED strip mounted
+              internally and function as a real bulb.
+              <br>
+              To allow for secure mounting and solid electrical connections, we also designed a custom plate attached to
+              the robot arm base for fastening down all the different components. For the base robot arm, we mounted a
+              desk clamp so that the base is firmly planted to react against the forces that the lamp “head” will
+              generate in motion. To make the switch more easily actuated by the robot, we designed and mounted an
+              extension to the flip lever.
+            </p>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Electrical</h5>
+            <img src="img/mechanical_design_3.png" class="mx-auto d-block" style="width: 60%;">
+          </div>
+          <div class="card-footer">
+            <p>
+              There are a few different electrical systems on the robot. First is the Raspberry Pi, which is powered via
+              the standard DC power supply. Then the servos take power and control signals through a proprietary adapter
+              board, which buffers and controls both the TX/RX serial data flow into one wire and provides all of the
+              main power. The servos run on anything between 6 and 8.4 volts, so we used a standard lab DC supply and
+              chose 6.6 volts to be safe. The servo adapter board connects to the Pi via a USB cable, and signals and
+              power of the servos are relayed to each other via daisy-chaining, from a 3-pin Molex Mini-SPOX wire. More
+              details can be found on the manufacturer’s website.
+              <br>
+              For the lamp end-effector, there are two separate systems. First is the camera, which receives its power
+              and transmits data through an HDMI adapter board. The adapter board is used instead of the typical ribbon
+              cable is because the ribbon cable is susceptible to wear and tear easily, especially if the camera is
+              constantly moving on the robot arm. The adapter board connects to the camera via a very short ribbon
+              cable, funnels the data to an HDMI connector that has 16 pins (ribbon cable has 15), and is adapted on the
+              other side back into a ribbon cable to plug into the Pi. This is a component that we purchased, and we
+              also chose a spiral HDMI cable that is more flexible.
+              <br>
+              The second system is the LED inside the bulb. For that, we simply cut a three LED segment from a strip and
+              stuck it inside the bulb. The segment takes anywhere between 7 and 12 volts to turn on, so we connected to
+              a switch and a 9-volt battery. The battery is used so that the arm does not need another power supply, and
+              the switch is used so that the robot can interactively turn on its light, under its own power. To detect
+              the state of the light bulb, a simple voltage divider was used to reduce the input level and is fed into a
+              GPIO pin. A full electrical diagram can be found below:
+            </p>
+          </div>
+          <img src="img/mechanical_design_whole.png" class="mx-auto d-block" style="width: 60%;">
+        </div>
+
+        <div class="software-card">
+          <div class="card-header">
+            <h3>Software</h3>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Servo Control</h5>
+          </div>
+          <div class="card-footer">
+            <p>
+              The low-level servo control is achieved through the manufacturer provided python serial protocol, although
+              we have customized it as well to achieve better performance. The python package pyserial was used for
+              this. There were a few different functions that we utilized. First is send command, and its basic
+              structure is a 2-byte new instruction signal (two of 0x55), followed by the instruction type which is 1
+              byte, then followed by the actual data for the specific instruction. This is used for all commands that
+              the Pi sends to the servo, and the instructions can vary in length depending on data and type. The
+              instruction types that we used include servo/motor mode setting, servo mode angle command, motor mode
+              speed command, and unload servo.
+              <br>
+              The serial servos are more advanced compared to regular servos in that first, they communicate through
+              serial, and second, they have servo and motor modes. They can also be daisy-chained, meaning running a
+              single connection between servo pairs, and are individually addressable through unique IDs. Servo mode is
+              the same as regular servos, where the master issues an angular command and the servo goes to that angle.
+              In this mode, the serial servos are limited to 240 degrees, which is represented by a feedback value of 0
+              to 1000, effectively resulting in a precision of 0.24 degrees. The angular control is done by an internal
+              control loop and resists external forces fairly well. The cool thing about these servos is that in
+              addition to being able to go to a certain angle from this command, it also has a time setting as the
+              second argument. The time argument varies between 0 and 30,000 milliseconds, telling the servo how long it
+              has to go to the desired angle. A value of 0 simply means go to the angle as quickly as possible, which is
+              what we used for our implementation. Motor mode on these servos turns them into DC motors, and the control
+              input of power can be adjusted from -1000 to 1000. A negative value means turn counterclockwise, and vice
+              versa. In this mode, the servo has no angular restrictions. Lastly, unload servo means to allow the servo
+              to be back-driven with as little resistance as possible, which is useful when manually adjusting the arm.
+              <br>
+              There are also two read commands that are used to obtain data from the servos, read angle and read the
+              temperature. Both work the same, by first sending the desired servo ID, along with the command instruction
+              type. Then, a small delay is required (presumably for the buffer to switch states into receive), after
+              which data comes back and is decoded. We have experimented with this and shortened the delay as much as
+              possible, in order to increase the read and command frequencies. For the read angle command, as explained
+              the value returned is between 0 and 1000, representing the number of 0.24 degrees measurement intervals.
+              For the temperature command, it simply returns the temperature of the motor inside the servo. It is used
+              to monitor the servo conditions under longer-term operation, as the arm can draw as much as 5 amps for
+              demanding maneuvers
+            </p>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">High-Level Commands</h5>
+            <div class="card-group">
+              <div class="card">
+                <img src="img/software_servo_1.png" class="card-img-top">
+              </div>
+              <div class="card">
+                <img src="img/software_servo_2.png" class="card-img-top">
+              </div>
+              <div class="card">
+                <img src="img/software_servo_3.png" class="card-img-top">
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <p>
+              Originally, we planned to use ROS and Moveit! package for high-level controls and path planning. Thus, we
+              built a full 3D package using Solidworks and ROS tools on an Ubuntu machine and verified its functionality
+              using RViz. However, we found that due to the Raspberry Pi’s relatively low computational power, ROS
+              doesn’t work very well on it, and RViz is not even supported. So we have resorted to record and play for
+              the arms control while doing a simple proportional controller for two select joints.
+            </p>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Joint States Record and Replay</h5>
+          </div>
+          <div class="card-footer">
+            <p>
+              To simplify path generation, we developed a record-and-replay Python script. In essence, when we run the
+              script, the robot would be manipulated manually to achieve the desired sequence of motion. For each
+              timestamp, the corresponding states of every servo and the time value would be recorded into a row of a
+              CSV file. Then, when we run the replay script, the robot would read the specific CSV file line by line and
+              check the time. If the time duration is matched, each servo is assigned the recorded angular value and the
+              movement is thus recreated. Otherwise, if the time duration is not yet matched, the loop busy waits until
+              the time does match. Below shows an example of a CSV file.
+              <br>
+              With this mechanism fully functional, we were able to generate 9 different CSV file routines, including 2
+              for physically turning on the switch, and 7 for randomized dance routines of various lengths. We found
+              that 5, 10, and 15 seconds were good lengths for routines. Although we could have generated more routines,
+              we found that it actually worked well with this implementation, and it was difficult to tell repeats of
+              routines due to the non-deterministic face tracking mixed in between.
+            </p>
+          </div>
+          <img src="img/software_servo_4.png" class="mx-auto d-block" style="width: 60%;">
+          <div class="card-body">
+            <h5 class="card-title">Face Detection</h5>
+          </div>
+          <div class="card-footer">
+            <p>
+              We tested different face detection methods running on the RPi. Considering the limited computation
+              resources, we first adapted the traditional Haar-Cascade method by using OpenCV to solve our problem, and
+              this detector lacked accuracy when the camera is only able to capture the side of faces. But it executes
+              fast with 20-32 frames per second at (w=320, h=240) resolution. Then we tried to improve the detector by
+              employing deep learning-based neural networks. We used MTCNN which is a capstone architecture in the face
+              detection field and the accuracy is excellent. It was able to detect faces accurately even with a small
+              area captured by the camera, but it runs a lot slower with approximately 1-2 frames per second, which
+              cannot satisfy our minimum requirement. Lastly, we tried to use lightweight face detection models based on
+              deep learning in order to get a balance between detection speed and accuracy. However, even the most
+              portable model did not satisfy our requirement, with the MobileNet-SSD v2 running at about 3-4 frames per
+              second. So we ended up using the Haar-Cascade feature extractor and detector for our final implementation.
+              <br>
+              Haar-Cascade is a machine learning-based approach where a cascade function is trained from a lot of
+              positive and negative images. We downloaded the pre-trained model parameters and applied them to our
+              script directly. However, to achieve more precise face detection, we improve the Haar-Cascade algorithm by
+              following tricks: first, we set the minimum size for the potential bounding boxes to be 60x60 pixels, in
+              order to avoid mismatch for small face-like objects. Further, we picked the bounding box with the largest
+              area to refine the detection results. Lastly, we drew the refined facial bounding box onto the real-time
+              frame by using OpenCV to visualize the performance of the algorithm. Even though this algorithm is not
+              accurate enough for detecting side-way faces, we found that its precision of detecting frontal-face is
+              accurate enough for facial tracking and its speed is far beyond our minimum requirement.
+              <br>
+              To achieve face tracking which is stated in detail in the below section, we had to calculate the distance
+              between the center of the detected bounding box and the captured frame. We simply got the distance by
+              first calculating the center coordinates of both the bounding box and the image frame, and then doing
+              subtraction. Since we had to instruct the robot arm in which direction it should move next, we also got
+              the direction information by the symbol of the subtraction result. See the diagram below.
+            </p>
+          </div>
+          <img src="img/software_face_dist.png" class="mx-auto d-block" style="width: 60%;">
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Face Tracking</h5>
+          <div class="card-body">
+            <h5 class="card-title">High-Level Commands</h5>
+            <div class="card-group">
+              <div class="card">
+                <img src="img/software_joint.png" class="card-img-top">
+              </div>
+              <div class="card">
+                <img src="img/software_joint_dir.png" class="card-img-top">
+              </div>
+            </div>
+          </div>
+          
+          
+        </div>
+        <div class="card-footer">
+          <p>
+            With the distance of the largest face bounding box to the center of the image frame, it is possible to
+            implement a controller for face tracking. The most sophisticated way of doing this is through a 3D
+            representation of the face coordinates by calculating its transform from the robot base coordinates, then
+            planning a path using ROS. However, as mentioned earlier, due to computation restrictions in addition to the
+            heavy load introduced by the computer vision algorithm, this was not practical to implement. Thus, we have
+            simplified the problem to a two joint pan-tilt camera tracking problem.
+            <br>
+            Under this simplification, the two joints are independent and control separate axis of displacement in the
+            camera frame. For the horizontal motion, joint 1 is used with a proportional velocity controller. For the
+            vertical motion, joint 3 is used with a pseudo-velocity proportional controller. See the diagram below.
+            <br>
+            For joint 1, since gravity is perpendicular to it, no complicated control law is needed for good results. It
+            is under no varying load, except for friction that can effectively be ignored. Thus, the x offset of the
+            face detection box is fed straight into the controller, as the motor power input. Since the offset is
+            signed, this allows for the controller to work in both directions. Thus, the closer the face is to the
+            center of the frame, the weaker the control input will be, and vice versa. The joint 1 servo is set to motor
+            mode so that it turns with the power input parameter. This allows the robot to horizontally converge to the
+            face, putting it on the image frame’s centerline.
+            <br>
+            For joint 3, however, gravity is in the same direction as the direction of travel, thus a more sophisticated
+            controller is required. However, instead of programming and testing a PID loop, which can be difficult and
+            time-consuming, we opted to use the servo’s built-in position controller which already performs well. From
+            that, we developed what we call a “pseudo-velocity” proportional controller. With a vertical face offset,
+            depending on the sign of the offset, the control loop either increments or decrements an accumulation
+            variable. Then, if the same sign of offset is persistent between loops, the accumulation continues to grow
+            in magnitude. Joint 3’s angular position is read every loop, and the angular command is simply the joint
+            position plus the accumulation variable. The accumulation is needed to act as an integral term, where if the
+            last control angle value is not enough, it will keep incrementing in the right direction until the offset is
+            negated. If the offset sign is flipped, the accumulation variable is immediately set to 0 and the control
+            loop repeats. In testing, we found that although it does have some jitter and is not perfect, it functions
+            well for tracking faces.
+            <br>
+            For both joints, in order to guard against unsafe joint angles, we have implemented software limits. Joint 1
+            is restricted to 50 to 900 in angle readings, and joint 3 is restricted to 150 to 900. If the lower limit is
+            reached, the joint is not allowed to actuate further in the lower direction, while higher actuation values
+            that will pull it back into the normal operating intervals are allowed. The same logic is set for the higher
+            joint limits, and this system performed well to prevent physical collision and tangling of wires.
+          </p>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Code Integration</h5>
+          <img src="img/software_whole.png" class="mx-auto d-block" style="width: 60%;">
+        </div>
+        <div class="card-footer">
+          <p>
+            We integrated the servo control code and the face detection code by encapsulating separate scripts into
+            different functions and placing them into a single script called face_servo.py. The structure of the final
+            integrated code is that, in general, first is the encapsulated functions including randomizing movement
+            function, light-switch function, and essential servo functions, and initialized variables including global
+            control flag, a dictionary containing the pair of servo ids and original positions and the serial command
+            dictionary. The second part is the main entry point which consists of the initialization of real-time video
+            stream, looping over and processing the frames, doing face detection and calculating the center distance
+            between the bounding box and the frame. Lastly, it is the servo control where we improved the code by
+            constraining the possible movement range of the robot since it makes no sense to let the robot move back
+            against users. We put the random dance routine code at the end of the script as it would be blocking when
+            the robot is dancing. It is worth noting that we programmed multi-threading code to achieve the light-switch
+            routine since the robot is keeping listening to the specific GPIO port defined manually.
+            <br>
+            To achieve humanistic behaviors, we carefully developed the randomizing dance routine by setting random
+            intervals between two routines to approximately 90-180 seconds. Specifically, we initialized a variable as
+            the start time and use the Python time package to get the current time. By subtracting the initial time in
+            every loop, we were able to retrieve the duration of each iteration. As long as the duration is equal to the
+            defined showing routine timestamp, we called the corresponding function and simply generated a random number
+            using the Python random package. With this random number, we could choose a pre-recorded routine and show
+            it. When the display is finished, we reset the duration to 0 and the showing timestamp to another random
+            number ranging from 90 to 180.
+            <br>
+            The first version of the integrated script works but the structure is messed up because we did not modulize
+            each function and directly put them following the data flow order. Then we encountered lots of problems when
+            we were trying to modify some functions. So we realized that this version is pretty vulnerable, unadapted
+            and not user-friendly. We improved the structure by doing encapsulation, modulation, and multi-threading and
+            so on as we stated in the above paragraph.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Testing -->
+    <div id="testing" class="test-sec">
+      <div class="section-header">
+        <h2>Testing</h2>
+      </div>
+      <div class="testing-content">
+        <p>
+          We did the hardware and software testing separately in order to simplify the debugging of potential problems.
+          For the hardware, placeholder.
+          <br>
+          For the software, the key is the RPi camera, so we make sure it works normally before we started any
+          programming. Then we first ran all the potential helpful algorithms in our local machine. In this way, we are
+          able to understand the algorithms in-depth and know about the performance of each algorithm. Then we adapted the
+          algorithms into the RPi and visualized the captured frames and the detected bounding boxes by using OpenCV.
+          Furthermore, we printed the bounding boxes’ information in order to not only test the accuracy of our algorithms
+          but also test the maximum frame rate. Despite all the challenges that we encountered, we managed to finish all
+          the testing and achieved our initial objectives by the demo date.
+        </p>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div id="results" class="result-sec">
+      <div class="section-header">
+        <h2>Results</h2>
+      </div>
+      <div class="result-content">
+        <p>
+          In conclusion, we achieved our initial expectation where we designed and manufactured the 6-DOF robot arm and
+          programmed it controllable, developed efficient face detection algorithms and integrated them into a stable
+          script.
+          <br>
+          For the software, we achieved high frame-rate (20-30 fps) face detection for real-time facial tracking on the
+          computation limited embedded system and stable servo control for showing various pre-recorded routines. Also,
+          after integrating the whole system, even though there is still a little jitter when tracking faces, the robot
+          arm works as expected.
+          <br>
+          Regardless of certain inaccuracy of face detection due to the limited computational resources, our Pixar Lamp
+          meets our objectives and is able to detect and track human faces. In addition, our Pixar Lamp is able to perform
+          interesting postures randomly and then continue to do facial tracking. So we consider our project to be a great
+          success. Although our project was completed before the deadline, future work is needed to make the system more
+          robust and accurate in the perspectives of software.
+        </p>
+      </div>
+    </div>
+
+
+    <!-- Budget -->
+    <div id="budget" class="budget-sec">
+      <div class="section-header">
+        <h2>Budget</h2>
+      </div>
+      <div class="budget-content">
+        <p>
+          Note that the robot arm cost was not included, as that was built for a different project.
+        </p>
+        <div class="budget-table">
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Item Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">
+                  <a
+                    href="https://www.amazon.com/Raspberry-Pi-Camera-Module-Megapixel/dp/B01ER2SKFS/ref=sr_1_3?keywords=rpi+camera+v2&qid=1575770094&sr=8-3">
+                    Raspberry Pi Camera V2
+                  </a>
+                </th>
+                <td>21</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <a
+                    href="https://www.amazon.com/Arducam-Extension-Module-Raspberry-Specific/dp/B06XDNBM63/ref=sr_1_4?keywords=hdmi+adapter+rpi+camera&qid=1575770125&sr=8-4">
+                    HDMI Adapter Board
+                  </a>
+                </th>
+                <td>14</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <a
+                    href="https://www.amazon.com/Seadream-Converter-Adapter-Resolution-Stretched/dp/B073HW2J72/ref=sr_1_6?crid=26LBB85JCRRL4&keywords=hdmi+cable+spiral&qid=1575770144&sprefix=spiral+hdmi+c%2Caps%2C164&sr=8-6">
+                    Spiral HDMI Cable
+                  </a>
+                </th>
+                <td>9</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <th scope="row">LED Strip</th>
+                <td>0.5</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <th scope="row">Toggle Switch</th>
+                <td>0.5</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <th scope="row">M3 Screws</th>
+                <td>1</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <th scope="row">3D Printing Filament</th>
+                <td>20</td>
+                <td>1/2 Roll</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- References -->
+    <div id="references" class="ref-sec">
+      <div class="section-header">
+        <h2>References</h2>
+      </div>
+      <div class="ref-content">
+        <ul class="list-group">
+          <li class="list-group-item">
+            <a href="https://www.pyimagesearch.com/2018/06/25/raspberry-pi-face-recognition/">
+              Raspberry Pi Face Recognition - PyImageSearch
+            </a>
+          </li>
+          <li class="list-group-item">
+            <a href="https://github.com/timesler/facenet-pytorch">
+              Pretrained Pytorch face detection and recognition models
+            </a>
+          </li>
+          <li class="list-group-item">
+            <a href="https://kpzhang93.github.io/MTCNN_face_detection_alignment/paper/spl.pdf">
+              MTCNN
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Contribution -->
+    <div id="contribution" class="contribution-sec">
+      <div class="section-header">
+        <h2>Contribution</h2>
+      </div>
+      <div class="contribution-content">
+        <ul class="list-group">
+          <li class="list-group-item list-group-item-dark">Kowin Shi - Mechanical Design & Integration, 3D Printing, CAD
+            Models & Rendering</li>
+          <li class="list-group-item list-group-item-dark">Tian Qiu - Software Control, Computer Vision, Website Building
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Acknowledgements -->
+    <div id="acknowledgement" class="ack-sec">
+      <div class="section-header">
+        <h2>Acknowledgements</h2>
+      </div>
+      <div class="ack-content">
+        <ul class="list-group">
+          <li class="list-group-item list-group-item-dark">Prof. Skovira - Advise on hardware, software, provider of RPi 3B+</li>
+          <li class="list-group-item list-group-item-dark">Prof. Land - 
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+    
+  <footer class="footer">
+    <div class="container">
+      <p class="text-muted" style="margin-bottom: 0;">Copyright@2019-2020 Kowin(kss223) & Tian(tq42)</p>
+    </div>
+  </footer>
+
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+  </script>
+</body>
+
+</html>
