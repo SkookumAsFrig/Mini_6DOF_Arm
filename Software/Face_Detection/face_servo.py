@@ -360,7 +360,17 @@ while True:
         if pos2:
             print('joint 3 position: {}'.format(pos2))
             # limit the movement angle for joint 3
-            if pos2 > 150 and pos2 < 900:
+            if pos2 > 150 :
+                if dist_center_y < 0:
+                    if linc < 100:
+                        linc += 1
+                    hinc = 1
+                    servoWriteCmd(joint_id['joint_3'][0],
+                                  command["SERVO_MODE_WRITE"], 0)
+                    servoWriteCmd(joint_id['joint_3'][0],
+                                  command["MOVE_WRITE"], pos2 - linc, 0)
+
+            if pos2 < 900:
                 if dist_center_y > 0:
                     linc = 1
                     if hinc < 500:
@@ -370,18 +380,6 @@ while True:
                     servoWriteCmd(joint_id['joint_3'][0],
                                   command["MOVE_WRITE"], pos2 + hinc, 0)
                     print(pos2 + hinc)
-                else:
-                    if linc < 100:
-                        linc += 1
-                    hinc = 1
-                    servoWriteCmd(joint_id['joint_3'][0],
-                                  command["SERVO_MODE_WRITE"], 0)
-                    servoWriteCmd(joint_id['joint_3'][0],
-                                  command["MOVE_WRITE"], pos2 - linc, 0)
-            elif pos2 < 155:
-                servoWriteCmd(joint_id['joint_3'][0], command["MOVE_WRITE"],
-                              170, 0)
-                print('hit low end')
     else:
         servoWriteCmd(joint_id['joint_1'][0], command["SERVO_MODE_WRITE"], 1,
                       0)
