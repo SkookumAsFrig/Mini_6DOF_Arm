@@ -26,6 +26,9 @@ p {
 }
 .card-img-top {
     width: 100%;
-    height: 40vw;
-    object-fit: cover;
+    height: 36vw;
+    /* object-fit: cover; */
+}
+figcaption {
+    margin: auto;
 }
