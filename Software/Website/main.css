@@ -26,6 +26,6 @@ p {
 }
 .card-img-top {
     width: 100%;
-    height: 32vw;
+    height: 40vw;
     object-fit: cover;
 }
