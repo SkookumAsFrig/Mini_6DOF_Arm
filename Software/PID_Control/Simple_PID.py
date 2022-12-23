@@ -59,7 +59,7 @@ def readPosition(id):
 def readID(id):
  
     serialHandle.flushInput()
-    servoWriteCmd(id, command["ID_READ"]) #send read command
+    servoWriteCmd(0xFE, command["ID_READ"]) #send read command
  
     time.sleep(0.0055)  #delay
 
@@ -67,9 +67,11 @@ def readID(id):
     servid = None
     if count != 0: #if not empty
         recv_data = serialHandle.read(count) #read data
+        # print('count is ' + str(count))
         if count == 7: #if it matches expected data length
-            if recv_data[0] == 0x55 and recv_data[1] == 0x55 and recv_data[4] == 0x10 :
-                #first and second bytes are 0x55, fifth byte is 0x10 (14), which is read id command
+            # print(recv_data)
+            if recv_data[0] == 0x55 and recv_data[1] == 0x55 and recv_data[4] == 0x0E :
+                #first and second bytes are 0x55, fifth byte is 0x0E (14), which is read id command
                  servid= recv_data[5]
                  
     return servid
@@ -93,25 +95,45 @@ def readTemperature(id):
     return tem
 
 joint_id = { #[real servo id, command position]
-"joint_1" : [1, 852]
+"joint_1" : [1, 700]
 }
 
 servoWriteCmd(joint_id["joint_1"][0], command["LOAD_UNLOAD_WRITE"],0)
 
-while True:
+init_time = time.time()
+duration = 30
+now_time = 0
+report_dur = 5
+old_rem_time = 0
+
+while now_time < duration:
     pos = readPosition(joint_id["joint_1"][0])
     # temp = readTemperature(joint_id["joint_1"][0])
-    # servo_id = readID(0xFE)
     # if temp is None:
     #     temp = 'temp is NoneType'
     if pos is None:
         # pos = 'pos is NoneType'
         pos = 0
-    # if servo_id is None:
-    #     servo_id = 'servoid is NoneType'
+
     target = joint_id["joint_1"][1]
     # print(str(pos) + ', ' + str(target) + ', ' + str(servo_id) + ', ' + str(temp))
-    servoWriteCmd(joint_id["joint_1"][0], command["MOVE_WRITE"],target-pos)
+    motor_input = target-pos
+    motor_input = max(min(motor_input, 1000), -1000)
+    servoWriteCmd(joint_id["joint_1"][0], command["MOVE_WRITE"],motor_input)
 
+    now_time = time.time()-init_time
+    rem_time = now_time%report_dur
+
+    if old_rem_time>rem_time:
+        print(str(now_time)[0:6] + ' seconds have passed')
+        servo_id = readID(1)
+        if servo_id is None:
+            servo_id = 'NoneType'
+        print('servoID is ' + str(servo_id))
+
+    old_rem_time = rem_time
+
+
+servoWriteCmd(joint_id["joint_1"][0], command["LOAD_UNLOAD_WRITE"],0)
 
 
