@@ -2,6 +2,8 @@
 
 import serial
 import time
+import numpy as np
+import matplotlib.pyplot as plt
 
 
 serialHandle = serial.Serial("/dev/ttyUSB0", 115200)  #115200 baud rate
@@ -57,7 +59,7 @@ def readPosition(id):
 
 
 def readID(id):
- 
+  
     serialHandle.flushInput()
     servoWriteCmd(0xFE, command["ID_READ"]) #send read command
  
@@ -95,7 +97,7 @@ def readTemperature(id):
     return tem
 
 joint_id = { #[real servo id, command position]
-"joint_1" : [1, 700]
+"joint_1" : [1, 100]
 }
 
 servoWriteCmd(joint_id["joint_1"][0], command["LOAD_UNLOAD_WRITE"],0)
@@ -103,8 +105,15 @@ servoWriteCmd(joint_id["joint_1"][0], command["LOAD_UNLOAD_WRITE"],0)
 init_time = time.time()
 duration = 30
 now_time = 0
-report_dur = 5
+report_dur = 3
 old_rem_time = 0
+kp = 30
+ki = 0.2
+err_int = 0
+data = []
+last_err = 0
+tar_inc = 300
+
 
 while now_time < duration:
     pos = readPosition(joint_id["joint_1"][0])
@@ -117,23 +126,48 @@ while now_time < duration:
 
     target = joint_id["joint_1"][1]
     # print(str(pos) + ', ' + str(target) + ', ' + str(servo_id) + ', ' + str(temp))
-    motor_input = target-pos
+
+    # Control law
+    err = target-pos
+    err_int += err
+    if np.sign(err) != np.sign(last_err):
+        err_int = 0
+
+    # need round to keep motor input a integer
+    motor_input = round(kp*err + ki*err_int)
+    last_err = err
+
+    # Limit motor input to real hardware range
     motor_input = max(min(motor_input, 1000), -1000)
-    servoWriteCmd(joint_id["joint_1"][0], command["MOVE_WRITE"],motor_input)
+
+    servoWriteCmd(joint_id["joint_1"][0], command["SERVO_MODE_WRITE"], 1, motor_input)
 
     now_time = time.time()-init_time
     rem_time = now_time%report_dur
 
     if old_rem_time>rem_time:
+        print('control period: ' + str(rem_time + report_dur - old_rem_time))
         print(str(now_time)[0:6] + ' seconds have passed')
         servo_id = readID(1)
         if servo_id is None:
             servo_id = 'NoneType'
         print('servoID is ' + str(servo_id))
 
+        # Advance target
+        target += tar_inc
+        
+        # Limit position target to real hardware range
+        joint_id["joint_1"][1] = max(min(target, 1000), 0)
+
     old_rem_time = rem_time
+    data += [[now_time, pos]]
 
-
+servoWriteCmd(joint_id["joint_1"][0], command["SERVO_MODE_WRITE"], 0)
 servoWriteCmd(joint_id["joint_1"][0], command["LOAD_UNLOAD_WRITE"],0)
 
-
+data = np.array(data)
+fig = plt.plot(data[:,0], data[:,1])
+plt.xlabel("Time (s)")
+plt.ylabel("Position (sensor units)")
+plt.title("Single Servo Motor Mode PID Response")
+plt.show()
